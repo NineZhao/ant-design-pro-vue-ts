@@ -29,7 +29,6 @@ function hasPermission(permission: any[], route: { children?: { length: any }; m
  * @param route
  * @returns {*}
  */
-// eslint-disable-next-line
 function hasRole(roles: { id: any }, route: { meta: { roles: { includes: (arg0: any) => void } } }): any {
   if (route.meta && route.meta.roles) {
     return route.meta.roles.includes(roles.id);

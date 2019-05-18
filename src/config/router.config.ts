@@ -12,13 +12,13 @@ export const asyncRouterMap = [
       {
         path: "/dashboard",
         name: "dashboard",
-        redirect: "/dashboard/test",
+        redirect: "/dashboard/workplace",
         component: RouteView,
         hideChildrenInMenu: true,
         meta: { title: "仪表盘", keepAlive: true, permission: ["dashboard"] },
         children: [
           {
-            path: "/dashboard/test",
+            path: "/dashboard/workplace",
             name: "test",
             component: () => import("@/views/dashboard/test.vue")
           }

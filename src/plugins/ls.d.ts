@@ -5,6 +5,7 @@ declare module "vue/types/vue" {
     ls: {
       set: Function;
       get: Function;
+      remove: Function;
     };
   }
 }

@@ -1,6 +1,6 @@
 import Vue from "vue";
-// import { login, getInfo, logout } from '@/api/login'
-// import { ACCESS_TOKEN } from "@/store/mutation-types";
+import { login, getInfo, logout } from "@/api/login";
+import { ACCESS_TOKEN } from "@/store/mutation-types";
 import { welcome } from "@/utils/util";
 
 const user = {
@@ -36,71 +36,79 @@ const user = {
   actions: {
     // 登录
     Login({ commit }: any, userInfo: {}) {
-      // return new Promise((resolve, reject) => {
-      //   login(userInfo)
-      //     .then(response => {
-      //       const result = response.result;
-      //       Vue.ls.set(ACCESS_TOKEN, result.token, 7 * 24 * 60 * 60 * 1000);
-      //       commit("SET_TOKEN", result.token);
-      //       resolve();
-      //     })
-      //     .catch(error => {
-      //       reject(error);
-      //     });
-      // });
+      return new Promise((resolve, reject) => {
+        login(userInfo)
+          .then((response: any) => {
+            const result = response.result;
+            Vue.ls.set(ACCESS_TOKEN, result.token, 7 * 24 * 60 * 60 * 1000);
+            commit("SET_TOKEN", result.token);
+            resolve();
+          })
+          .catch((error: any) => {
+            reject(error);
+          });
+      });
     },
 
     // 获取用户信息
     GetInfo({ commit }: any) {
       return new Promise((resolve, reject) => {
-        // getInfo()
-        //   .then(response => {
-        //     const result = response.result;
-        //     if (result.role && result.role.permissions.length > 0) {
-        //       const role = result.role;
-        //       role.permissions = result.role.permissions;
-        //       role.permissions.map(per => {
-        //         if (per.actionEntitySet != null && per.actionEntitySet.length > 0) {
-        //           const action = per.actionEntitySet.map(action => {
-        //             return action.action;
-        //           });
-        //           per.actionList = action;
-        //         }
-        //       });
-        //       role.permissionList = role.permissions.map(permission => {
-        //         return permission.permissionId;
-        //       });
-        //       commit("SET_ROLES", result.role);
-        //       commit("SET_INFO", result);
-        //     } else {
-        //       reject(new Error("getInfo: roles must be a non-null array !"));
-        //     }
-        //     commit("SET_NAME", { name: result.name, welcome: welcome() });
-        //     commit("SET_AVATAR", result.avatar);
-        //     resolve(response);
-        //   })
-        //   .catch(error => {
-        //     reject(error);
-        //   });
+        getInfo()
+          .then((response: any) => {
+            const result = response.result;
+            if (result.role && result.role.permissions.length > 0) {
+              const role = result.role;
+              role.permissions = result.role.permissions;
+              role.permissions.map(
+                (per: {
+                  actionEntitySet: {
+                    length: number;
+                    map: (arg0: (action: any) => any) => void;
+                  } | null;
+                  actionList: any;
+                }) => {
+                  if (per.actionEntitySet != null && per.actionEntitySet.length > 0) {
+                    const action = per.actionEntitySet.map(actions => {
+                      return actions.action;
+                    });
+                    per.actionList = action;
+                  }
+                }
+              );
+              role.permissionList = role.permissions.map((permission: { permissionId: any }) => {
+                return permission.permissionId;
+              });
+              commit("SET_ROLES", result.role);
+              commit("SET_INFO", result);
+            } else {
+              reject(new Error("getInfo: roles must be a non-null array !"));
+            }
+            commit("SET_NAME", { name: result.name, welcome: welcome() });
+            commit("SET_AVATAR", result.avatar);
+            resolve(response);
+          })
+          .catch((error: any) => {
+            reject(error);
+          });
       });
-    }
+    },
 
     // 登出
-    // Logout({ commit, state }) {
-    //   return new Promise(resolve => {
-    //     commit("SET_TOKEN", "");
-    //     commit("SET_ROLES", []);
-    //     Vue.ls.remove(ACCESS_TOKEN);
+    Logout({ commit, state }: any) {
+      return new Promise(resolve => {
+        commit("SET_TOKEN", "");
+        commit("SET_ROLES", []);
+        Vue.ls.remove(ACCESS_TOKEN);
 
-    //     logout(state.token)
-    //       .then(() => {
-    //         resolve();
-    //       })
-    //       .catch(() => {
-    //         resolve();
-    //       });
-    //   });
-    // }
+        logout(state.token)
+          .then(() => {
+            resolve();
+          })
+          .catch(() => {
+            resolve();
+          });
+      });
+    }
   }
 };
 
