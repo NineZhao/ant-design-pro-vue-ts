@@ -1,4 +1,4 @@
-# vuets
+# ant-design-pro-vue-ts
 
 ## Project setup
 ```
