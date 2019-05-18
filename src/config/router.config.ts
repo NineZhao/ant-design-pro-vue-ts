@@ -20,7 +20,8 @@ export const asyncRouterMap = [
           {
             path: "/dashboard/workplace",
             name: "test",
-            component: () => import("@/views/dashboard/test.vue")
+            component: () => import("@/views/dashboard/test.vue"),
+            meta: { title: "分析页", keepAlive: false, permission: ["dashboard"] }
           }
         ]
       }

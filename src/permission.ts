@@ -5,6 +5,7 @@ import store from "./store";
 import notification from "ant-design-vue/lib/notification";
 
 import NProgress from "nprogress"; // progress bar
+import { setDocumentTitle, domTitle } from "@/utils/domUtil";
 import "nprogress/nprogress.css"; // progress bar style
 import { ACCESS_TOKEN } from "@/store/mutation-types";
 
@@ -14,14 +15,13 @@ const whiteList = ["login", "register"]; // no redirect whitelist
 
 router.beforeEach((to, from, next) => {
   NProgress.start();
-  // tslint:disable-next-line: no-console
+  // tslint:disable-next-line: no-unused-expression
+  to.meta && (typeof to.meta.title !== "undefined" && setDocumentTitle(`${to.meta.title} - ${domTitle}`));
   if (Vue.ls.get(ACCESS_TOKEN)) {
     if (to.path === "/user/login") {
       next({ path: "/dashboard/workplace" });
       NProgress.done();
     } else {
-      // tslint:disable-next-line: no-console
-      console.log(store);
       if (store.getters.roles.length === 0) {
         store
           .dispatch("GetInfo")
@@ -46,9 +46,9 @@ router.beforeEach((to, from, next) => {
               message: "错误",
               description: "请求用户信息失败，请重试"
             });
-            // store.dispatch("Logout").then(() => {
-            //   next({ path: "/user/login", query: { redirect: to.fullPath } });
-            // });
+            store.dispatch("Logout").then(() => {
+              next({ path: "/user/login", query: { redirect: to.fullPath } });
+            });
           });
       }
       next();
