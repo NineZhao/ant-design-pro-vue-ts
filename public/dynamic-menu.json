@@ -1,0 +1,37 @@
+{
+  "message": "",
+  "data": [ {
+      "path": "/",
+      "name": "index",
+      "component": BasicLayout,
+      "meta": {
+        "title": "首页"
+      },
+      "redirect": "/dashboard/workplace",
+      "children": [ {
+        "path": "/dashboard",
+        "name": "dashboard",
+        "redirect": "/dashboard/test",
+        "component": RouteView,
+        "hideChildrenInMenu": true,
+        "meta": {
+          "title": "仪表盘",
+          "keepAlive": true,
+          "permission": [ "dashboard" ]
+        },
+        "children": [ {
+          "path": "/dashboard/test",
+          "name": "test",
+          "component": () => import( "@/views/home/test.vue" )
+        } ]
+      } ]
+    },
+    {
+      "path": "*",
+      "redirect": "/404",
+      "hidden": true
+    }
+  ],
+  "status": 200,
+  "timestamp": 1534844188679
+}
