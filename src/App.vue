@@ -5,12 +5,15 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-export default Vue.extend( {
-  mounted () {
+import { Component, Vue } from "vue-property-decorator";
+
+@Component
+export default class App extends Vue {
+  public mounted () {
     Vue.ls.set( "Access-Token", "1ed32dewg43wgeg" );
   }
-} );
+}
+
 </script>
 
 <style lang="less">
